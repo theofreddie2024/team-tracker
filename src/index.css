@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --color-surface: #ffffff;
+  --color-canvas: #f5f7fb;
+  --color-ink: #020617;
+  --color-ink-soft: #475569;
+  --color-edge: #e2e8f0;
+
+  --color-brand: #0f172a;
+  --color-brand-soft: #1e293b;
+  --color-accent: #0369a1;
+  --color-accent-strong: #0c4a6e;
+  --color-accent-soft: #e0f2fe;
+
+  --shadow-card: 0 1px 2px rgba(2, 6, 23, 0.04), 0 8px 24px -8px rgba(2, 6, 23, 0.08);
+  --shadow-lift: 0 6px 18px -6px rgba(2, 6, 23, 0.12), 0 16px 40px -16px rgba(2, 6, 23, 0.18);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "cv11";
+}
+
+/* Subtle ambient gradient for the canvas */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(900px 500px at 10% -10%, rgba(3, 105, 161, 0.06), transparent 60%),
+    radial-gradient(700px 400px at 110% 0%, rgba(99, 102, 241, 0.05), transparent 60%);
+}
+
+/* Form controls inherit the brand font */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* Polished focus ring */
+:where(button, [role="button"], a, input, select, textarea):focus-visible {
+  outline: 2px solid #0369a1;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* =============================================================================
+   Visual org / team tree — pure CSS branches
+   ============================================================================= */
+
+.org-tree {
+  --org-tree-line: #cbd5e1;       /* slate-300 */
+  --org-tree-gap: 28px;           /* space between rows for the connector */
+  display: flex;
+  justify-content: center;
+  padding: 24px 8px;
+  overflow-x: auto;
+}
+
+.org-tree-row {
+  display: flex;
+  position: relative;
+  padding-top: var(--org-tree-gap);
+  justify-content: center;
+}
+
+/* The root row sits directly under the page heading — no connector above it */
+.org-tree-row.is-root {
+  padding-top: 0;
+}
+
+.org-tree-cell {
+  position: relative;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Connectors above every non-root cell */
+.org-tree-row:not(.is-root) > .org-tree-cell::before,
+.org-tree-row:not(.is-root) > .org-tree-cell::after {
+  content: '';
+  position: absolute;
+  top: calc(-1 * var(--org-tree-gap));
+  width: 50%;
+  height: var(--org-tree-gap);
+}
+
+/* Left half: horizontal connector + the vertical drop down to this card */
+.org-tree-row:not(.is-root) > .org-tree-cell::before {
+  right: 50%;
+  border-right: 2px solid var(--org-tree-line);
+  border-top: 2px solid var(--org-tree-line);
+}
+
+/* Right half: horizontal connector */
+.org-tree-row:not(.is-root) > .org-tree-cell::after {
+  left: 50%;
+  border-top: 2px solid var(--org-tree-line);
+}
+
+/* First / last children trim the outer half of the horizontal connector */
+.org-tree-row > .org-tree-cell:first-child::before {
+  border-top: 0;
+}
+.org-tree-row > .org-tree-cell:last-child::after {
+  border-top: 0;
+}
+
+/* Only child — keep the vertical drop, drop both horizontal halves */
+.org-tree-row > .org-tree-cell:only-child::before {
+  border-top: 0;
+}
+.org-tree-row > .org-tree-cell:only-child::after {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
